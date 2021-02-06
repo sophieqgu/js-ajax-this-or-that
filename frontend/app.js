@@ -7,31 +7,29 @@ function displayPlayers() {
       element.innerText = player.name;
       document.body.appendChild(element);
     }
-  })
-
+  });
 }
 
 function submitPlayer(e) {
-
   e.preventDefault();
-
   const formData = new FormData(this);
-
   fetch("http://127.0.0.1:3000/players", {
     method: "POST",
     body: formData
   })
   .then(response => {
-    return response.text();
-  })
-  
+    console.log(response);
+  });
+}
+
+function askPlayerName() {
+  const form = document.querySelector("form");
+  form.addEventListener("submit", submitPlayer);
 }
 
 
 document.addEventListener("DOMContentLoaded", function() {
-
-  const form = document.querySelector("form");
-  form.addEventListener("submit", submitPlayer);
-
+//  loadQuestion();
+  askPlayerName();
 
 })

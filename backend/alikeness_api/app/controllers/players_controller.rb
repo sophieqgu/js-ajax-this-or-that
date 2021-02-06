@@ -9,10 +9,8 @@ class PlayersController < ApplicationController
   end
 
   def create
-    @player = Player.new(name: params[:name])
-    if !@player.save
-      render :index
-    end
+    @player = Player.create(name: params[:name])
+
   end
 
 end
