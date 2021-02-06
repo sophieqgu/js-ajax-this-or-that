@@ -1,19 +1,76 @@
+/*
+pink: #FF577F
+orange: #FF884B
+yellow: #FFC764
+paleblue: #CDFFFC
+*/
+
+
 body {
   font-family: 'Poppins', serif;
-  font-size: 36px;
-  color: #cdfffc;
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
   background: linear-gradient(90deg, #FF577F 50%, #FF884B 50%);
 }
 
-.wrapper {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
+.form__group {
+  position: relative;
+  padding: 15px 0 0;
+  margin-top: 10px;
+  width: 50%;
   text-align: center;
 }
+
+.form__field {
+  font-family: inherit;
+  width: 50%;
+  margin-top: 50%;
+  border: 0;
+  border-bottom: 2px solid #CDFFFC;
+  outline: 0;
+  font-size: 1.3rem;
+  color: #fff;
+  padding: 7px 0;
+  background: transparent;
+  transition: border-color 0.2s;
+}
+.form__field::placeholder {
+  color: #CDFFFC;
+}
+.form__field:placeholder-shown ~ .form__label {
+  font-size: 1.3rem;
+  cursor: text;
+  top: 100%;
+}
+.form__label {
+  display: none;
+}
+.form__field:focus {
+  padding-bottom: 6px;
+  font-weight: 700;
+  border-width: 3px;
+  border-image-slice: 1;
+}
+.form__field:focus ~ .form__label {
+  position: absolute;
+  top: 100%;
+  margin-left: 25%;
+  display: block;
+  transition: 0.2s;
+  font-size: 0.75rem;
+  color: #CDFFFC;
+  font-weight: 100;
+}
+
+/* reset input */
+.form__field:required, .form__field:invalid {
+  box-shadow: none;
+}
+
+
 
 #left-option, #right-option {
   display: inline-block;
