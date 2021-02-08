@@ -21,12 +21,13 @@ function submitPlayerName(e) {
     console.log(response);
   });
   e.target.innerHTML = "";
+  displayPlayers();
 }
 
 function askPlayerName() {
   // Create a wrapper
   const wrapper = document.createElement("div");
-  wrapper.setAttribute("class", "form__group field");
+  wrapper.setAttribute("class", "form__group");
   // Generate a form
   const form = document.createElement("form");
   form.setAttribute("method", "post");
@@ -57,6 +58,6 @@ function askPlayerName() {
 
 document.addEventListener("DOMContentLoaded", function() {
 //  loadQuestion();
-  askPlayerName();
+//  askPlayerName();
 
 })

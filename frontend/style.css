@@ -3,6 +3,7 @@ pink: #FF577F
 orange: #FF884B
 yellow: #FFC764
 paleblue: #CDFFFC
+palepink: #FCD1D1
 */
 
 
@@ -14,6 +15,35 @@ body {
   align-items: center;
   font-size: 2rem;
   background: linear-gradient(90deg, #FF577F 50%, #FF884B 50%);
+}
+
+.container {
+  width: 1000px;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+
+.container .card {
+  position: relative;
+  cursor: pointer;
+  width: 500px;
+  height: 1000px;
+  transition: 0.5s;
+  background: #FFC764;
+  color: #eee;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  transform: translateY(100px);
+}
+
+.container .card:hover {
+  background: #CDFFFC;
+  color: #fcd1d1;
+  font-size: 5rem;
+  transform: translateY(0);
 }
 
 .form__group {
@@ -68,15 +98,4 @@ body {
 /* reset input */
 .form__field:required, .form__field:invalid {
   box-shadow: none;
-}
-
-
-
-#left-option, #right-option {
-  display: inline-block;
-  border: 10px solid #cdfffc;
-  margin: 10%;
-  padding: 10%;
-  height: auto;
-  width: auto;
 }
