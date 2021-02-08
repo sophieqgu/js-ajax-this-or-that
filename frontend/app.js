@@ -1,3 +1,24 @@
+const questionContainer = document.getElementById("question-container");
+const shuffledQuestions, currentQuestionIndex = 0;
+
+
+function loadQuestion() {
+  questionContainer.classList.remove("hidden");
+  shuffledQuestions = questions.sort(() => Math.random() - 0.5);
+}
+
+function setNextQuestion() {
+  showQuestion(shuffledQuestions[currentQuestionIndex]);
+}
+
+function showQuestion(question) {
+
+}
+
+function selectOption() {
+
+}
+
 function displayPlayers() {
   fetch("http://127.0.0.1:3000/players")
   .then(response => response.json())
@@ -57,7 +78,7 @@ function askPlayerName() {
 
 
 document.addEventListener("DOMContentLoaded", function() {
-//  loadQuestion();
+  loadQuestion();
 //  askPlayerName();
 
 })

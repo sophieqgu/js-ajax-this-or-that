@@ -4,6 +4,7 @@ orange: #FF884B
 yellow: #FFC764
 paleblue: #CDFFFC
 palepink: #FCD1D1
+darkblue: #1d2d50;
 */
 
 
@@ -44,6 +45,14 @@ body {
   color: #fcd1d1;
   font-size: 5rem;
   transform: translateY(0);
+}
+
+.container .card.selected {
+  background: #1d2d50;
+}
+
+.container .card.not-selected {
+
 }
 
 .form__group {
@@ -98,4 +107,8 @@ body {
 /* reset input */
 .form__field:required, .form__field:invalid {
   box-shadow: none;
+}
+
+.hidden {
+  display: none;
 }
