@@ -17,7 +17,7 @@ function loadQuestion() {
     .catch(err => console.log(err.message));
 }
 
-function setNextQuestion() {
+function setNextQuestion(shuffledQuestions, currentQuestionIndex) {
   resetState();
   showQuestion(shuffledQuestions[currentQuestionIndex]);
 }
@@ -34,18 +34,66 @@ function showQuestion(question) {
   leftOption.setAttribute("class", "card");
   leftOption.setAttribute("Id", "left-option");
   leftOption.innerText = question.leftOption;
-  leftOption.addEventListener("click", selectOption);
   questionContainer.appendChild(leftOption);
   // Create right button
   const rightOption = document.createElement("div");
   rightOption.setAttribute("class", "card");
   rightOption.setAttribute("Id", "right-option");
   rightOption.innerText = question.rightOption;
-  rightOption.addEventListener("click", selectOption);
   questionContainer.appendChild(rightOption);
+
+
+  // Add eventlistener
+  leftOption.addEventListener("click", selectOption.bind(question));
+  rightOption.addEventListener("click", selectOption.bind(question));
+
 }
 
 function selectOption(e) {
+  const selected = e.target;
+  // Submit option to the server
+  let correct = {
+    numCorrect: this.numCorrect + 1,
+    numIncorrect: this.numIncorrect
+  }
+
+  let incorrect = {
+    numIncorrect: this.numIncorrect + 1,
+    numCorrect: this.numCorrect
+  }
+
+  let data;
+  if (selected.innerText === this.correctOption) {
+    data = correct;
+  } else {
+    data = incorrect;
+  }
+
+  fetch(`http://127.0.0.1:3000/questions/${this.id}`, {
+    method: "PATCH",
+    headers: {
+	     "Content-Type": "application/json",
+	     "Accept": "application/json"
+     },
+    body: JSON.stringify(data)
+  })
+  .then(response => console.log(response))
+  .then(data => console.log(data))
+  .catch(err => console.log(err));
+
+  // Display statistics
+  Array.from(questionContainer.children).forEach(card => {
+    if (card === selected) {
+      card.classList.add("selected");
+    } else {
+      card.classList.add("not-selected");
+    }
+    if (card.innerText === this.correctOption) {
+      card.classList.add("correct");
+    } else {
+      card.classList.add("incorrect")
+    }
+  })
 
 }
 

@@ -24,7 +24,6 @@ body {
   display: flex;
   justify-content: space-between;
 }
-
 .container .card {
   position: relative;
   cursor: pointer;
@@ -39,21 +38,29 @@ body {
   z-index: 1;
   transform: translateY(100px);
 }
-
 .container .card:hover {
   background: #CDFFFC;
   color: #fcd1d1;
   font-size: 5rem;
   transform: translateY(0);
 }
-
 .container .card.selected {
-  background: #1d2d50;
+  font-size: 5rem;
+  transform: translateY(0);
 }
-
 .container .card.not-selected {
-
+  font-size: 5rem;
+  transform: translateY(200px);
 }
+.container .card.correct {
+  background: #1d2d50;
+  color: #dddddd;
+}
+.container .card.incorrect {
+  background: #dddddd;
+  color: #1d2d50;
+}
+
 
 .form__group {
   position: relative;
@@ -103,7 +110,6 @@ body {
   color: #CDFFFC;
   font-weight: 100;
 }
-
 /* reset input */
 .form__field:required, .form__field:invalid {
   box-shadow: none;
