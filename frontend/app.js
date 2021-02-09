@@ -1,6 +1,6 @@
 const questionContainer = document.getElementById("question-container");
-const leftOption = document.getElementById("left-option");
-const rightOption = document.getElementById("right-option");
+//const leftOption = document.getElementById("left-option");
+//const rightOption = document.getElementById("right-option");
 let shuffledQuestions, currentQuestionIndex = 0;
 
 
@@ -18,15 +18,34 @@ function loadQuestion() {
 }
 
 function setNextQuestion() {
+  resetState();
   showQuestion(shuffledQuestions[currentQuestionIndex]);
 }
 
-function showQuestion(question) {
-  leftOption.innerText = question.leftOption;
-  rightOption.innerText = question.rightOption;
+function resetState() {
+  while (questionContainer.firstChild) {
+    questionContainer.removeChild(questionContainer.firstChild);
+  }
 }
 
-function selectOption() {
+function showQuestion(question) {
+  // Create left button
+  const leftOption = document.createElement("div");
+  leftOption.setAttribute("class", "card");
+  leftOption.setAttribute("Id", "left-option");
+  leftOption.innerText = question.leftOption;
+  leftOption.addEventListener("click", selectOption);
+  questionContainer.appendChild(leftOption);
+  // Create right button
+  const rightOption = document.createElement("div");
+  rightOption.setAttribute("class", "card");
+  rightOption.setAttribute("Id", "right-option");
+  rightOption.innerText = question.rightOption;
+  rightOption.addEventListener("click", selectOption);
+  questionContainer.appendChild(rightOption);
+}
+
+function selectOption(e) {
 
 }
 
