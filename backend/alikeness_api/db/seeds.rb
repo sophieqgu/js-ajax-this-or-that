@@ -12,6 +12,34 @@ players.each do |player|
     Player.create(name: player)
 end
 
-Question.create(leftOption: "Gryffindor", rightOption: "Slytherin", numCorrect: 1, numIncorrect: 0);
-Question.create(leftOption: "oven", rightOption: "microwave", numCorrect: 1, numIncorrect: 0);
-Question.create(leftOption: "bread", rightOption: "cake", numCorrect: 0, numIncorrect: 1);
+questions = [
+  {
+    leftOption: "Gryffindor",
+    rightOption: "Slytherin",
+    correctOption: "Gryffindor",
+    numCorrect: 1,
+    numIncorrect: 0
+  }, {
+    leftOption: "Oven",
+    rightOption: "Microwave",
+    correctOption: "Oven",
+    numCorrect: 1,
+    numIncorrect: 0
+  }, {
+    leftOption: "Bread",
+    rightOption: "Cake",
+    correctOption: "Cake",
+    numCorrect: 0,
+    numIncorrect: 1
+  }
+]
+
+questions.each do |question|
+  Question.create(
+    leftOption: question[:leftOption],
+    rightOption: question[:rightOption],
+    correctOption: question[:correctOption],
+    numCorrect: question[:numCorrect],
+    numIncorrect: question[:numIncorrect]
+  )
+end 

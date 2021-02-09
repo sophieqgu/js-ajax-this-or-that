@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 2021_02_08_224408) do
   create_table "questions", force: :cascade do |t|
     t.string "leftOption"
     t.string "rightOption"
+    t.string "correctOption"
     t.integer "numCorrect"
     t.integer "numIncorrect"
     t.datetime "created_at", precision: 6, null: false
