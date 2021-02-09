@@ -1,10 +1,20 @@
 const questionContainer = document.getElementById("question-container");
-const shuffledQuestions, currentQuestionIndex = 0;
+const leftOption = document.getElementById("left-option");
+const rightOption = document.getElementById("right-option");
+let shuffledQuestions, currentQuestionIndex = 0;
 
 
 function loadQuestion() {
   questionContainer.classList.remove("hidden");
-  shuffledQuestions = questions.sort(() => Math.random() - 0.5);
+
+  fetch("http://127.0.0.1:3000/questions")
+    .then(response => response.json())
+    .then(data => {
+      const questions = data;
+      shuffledQuestions = questions.sort(() => Math.random() - 0.5).slice(0, 10);
+      setNextQuestion(shuffledQuestions, currentQuestionIndex);
+    })
+    .catch(err => console.log(err.message));
 }
 
 function setNextQuestion() {
@@ -12,7 +22,8 @@ function setNextQuestion() {
 }
 
 function showQuestion(question) {
-
+  leftOption.innerText = question.leftOption;
+  rightOption.innerText = question.rightOption;
 }
 
 function selectOption() {
@@ -79,6 +90,6 @@ function askPlayerName() {
 
 document.addEventListener("DOMContentLoaded", function() {
   loadQuestion();
-//  askPlayerName();
+// askPlayerName();
 
 })

@@ -1,4 +1,6 @@
 class QuestionsController < ApplicationController
   def index
-  end 
+    questions = Question.all
+    render json: questions, only: [:leftOption, :rightOption]
+  end
 end
