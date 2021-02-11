@@ -138,10 +138,19 @@ function displayPlayers() {
 
 function submitPlayerName(e) {
   e.preventDefault();
-  const formData = new FormData(this);
+  let name = new FormData(this).get("name");
+  const formData = {
+    name: name,
+    score: currentScore
+  }
+
   fetch("http://127.0.0.1:3000/players", {
     method: "POST",
-    body: formData
+    headers: {
+	     "Content-Type": "application/json",
+	     "Accept": "application/json"
+     },
+    body: JSON.stringify(formData)
   })
   .then(response => {
     console.log(response);
@@ -190,7 +199,7 @@ function askPlayerName() {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-  loadQuestion();
- // askPlayerName();
+  //loadQuestion();
+  askPlayerName();
 
 })
