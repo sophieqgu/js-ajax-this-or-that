@@ -5,6 +5,7 @@ yellow: #FFC764
 paleblue: #CDFFFC
 palepink: #FCD1D1
 darkblue: #1d2d50;
+green: #baf1a1
 */
 
 
@@ -35,8 +36,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  vertical-align: center;
   z-index: 1;
   transform: translateY(100px);
+  padding: 50px;
 }
 .container .card:hover {
   background: #CDFFFC;
@@ -45,20 +48,21 @@ body {
   transform: translateY(0);
 }
 .container .card.selected {
-  font-size: 5rem;
   transform: translateY(0);
 }
-.container .card.not-selected {
-  font-size: 5rem;
-  transform: translateY(200px);
-}
 .container .card.correct {
-  background: #1d2d50;
-  color: #dddddd;
+  background: #baf1a1;
+  color: #1d2d50;
+  width: auto;
 }
 .container .card.incorrect {
-  background: #dddddd;
+  background: #FCD1D1;
   color: #1d2d50;
+  width: auto;
+}
+.container .card .content {
+  font-size: 10rem;
+  padding: 50px;
 }
 
 
@@ -68,6 +72,7 @@ body {
   margin-top: 10px;
   width: 50%;
   text-align: center;
+  transition: 2s;
 }
 
 .form__field {

@@ -1,6 +1,6 @@
 const questionContainer = document.getElementById("question-container");
-//const leftOption = document.getElementById("left-option");
-//const rightOption = document.getElementById("right-option");
+leftOption = document.getElementById("left-option");
+rightOption = document.getElementById("right-option");
 let shuffledQuestions, currentQuestionIndex = 0;
 
 
@@ -17,13 +17,15 @@ function loadQuestion() {
     .catch(err => console.log(err.message));
 }
 
-function setNextQuestion(shuffledQuestions, currentQuestionIndex) {
+function setNextQuestion() {
   resetState();
   showQuestion(shuffledQuestions[currentQuestionIndex]);
+  currentQuestionIndex++;
 }
 
 function resetState() {
   while (questionContainer.firstChild) {
+    questionContainer.firstChild.removeEventListener("click", selectOption);
     questionContainer.removeChild(questionContainer.firstChild);
   }
 }
@@ -35,6 +37,7 @@ function showQuestion(question) {
   leftOption.setAttribute("Id", "left-option");
   leftOption.innerText = question.leftOption;
   questionContainer.appendChild(leftOption);
+
   // Create right button
   const rightOption = document.createElement("div");
   rightOption.setAttribute("class", "card");
@@ -42,15 +45,23 @@ function showQuestion(question) {
   rightOption.innerText = question.rightOption;
   questionContainer.appendChild(rightOption);
 
-
   // Add eventlistener
-  leftOption.addEventListener("click", selectOption.bind(question));
-  rightOption.addEventListener("click", selectOption.bind(question));
+  const select = selectOption.bind(question);
+  leftOption.addEventListener("click", select, {once: true});
+  rightOption.addEventListener("click", select, {once: true});
+  questionContainer.addEventListener("click", preventClick.bind(select));
+}
 
+// Prevent click on the sibling again
+function preventClick() {
+  Array.from(questionContainer.children).forEach(card => {
+    card.removeEventListener("click", this);
+  });
 }
 
 function selectOption(e) {
   const selected = e.target;
+  selected.classList.add("selected");
   // Submit option to the server
   let correct = {
     numCorrect: this.numCorrect + 1,
@@ -62,12 +73,7 @@ function selectOption(e) {
     numCorrect: this.numCorrect
   }
 
-  let data;
-  if (selected.innerText === this.correctOption) {
-    data = correct;
-  } else {
-    data = incorrect;
-  }
+  let data = selected.innerText === this.correctOption ? correct : incorrect;
 
   fetch(`http://127.0.0.1:3000/questions/${this.id}`, {
     method: "PATCH",
@@ -82,18 +88,26 @@ function selectOption(e) {
   .catch(err => console.log(err));
 
   // Display statistics
+  let correctPercentage = Math.round(this.numCorrect / (this.numCorrect + this.numIncorrect) * 100);
   Array.from(questionContainer.children).forEach(card => {
-    if (card === selected) {
-      card.classList.add("selected");
-    } else {
-      card.classList.add("not-selected");
-    }
+    const content = document.createElement("div");
+    content.setAttribute("class", "content");
+    card.appendChild(content);
     if (card.innerText === this.correctOption) {
       card.classList.add("correct");
+      content.innerText = `${correctPercentage}%`;
     } else {
       card.classList.add("incorrect")
+      content.innerText = `${100 - correctPercentage}%`;
     }
   })
+
+  // Proceed to next question
+  if (currentQuestionIndex < shuffledQuestions.length) {
+    setTimeout(() => setNextQuestion(), 2000);
+  } else {
+    setTimeout(() => askPlayerName(), 2000);
+  }
 
 }
 
@@ -124,13 +138,16 @@ function submitPlayerName(e) {
 }
 
 function askPlayerName() {
+  resetState();
   // Create a wrapper
   const wrapper = document.createElement("div");
   wrapper.setAttribute("class", "form__group");
+
   // Generate a form
   const form = document.createElement("form");
   form.setAttribute("method", "post");
   form.setAttribute("action", "submit.php");
+
   // Create an input element for Name
   const name = document.createElement("input");
   name.setAttribute("type", "text");
@@ -143,17 +160,20 @@ function askPlayerName() {
   label.setAttribute("for", "name");
   label.setAttribute("class", "form__label");
   label.innerHTML = "Name --> PRESS ENTER"
+
   // Append the input element to the form
   form.append(name);
   form.append(label);
+
   // Append the form the to the wrapper
   wrapper.appendChild(form);
+
   // Append the wrapper to the document body;
   document.body.appendChild(wrapper);
+
   // Add eventlistener
   form.addEventListener("submit", submitPlayerName);
 }
-
 
 document.addEventListener("DOMContentLoaded", function() {
   loadQuestion();
