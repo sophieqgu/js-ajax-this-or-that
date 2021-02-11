@@ -1,7 +1,8 @@
 const questionContainer = document.getElementById("question-container");
-leftOption = document.getElementById("left-option");
-rightOption = document.getElementById("right-option");
+//leftOption = document.getElementById("left-option");
+//rightOption = document.getElementById("right-option");
 let shuffledQuestions, currentQuestionIndex = 0;
+let currentScore = 0;
 
 
 function loadQuestion() {
@@ -62,6 +63,10 @@ function preventClick() {
 function selectOption(e) {
   const selected = e.target;
   selected.classList.add("selected");
+  if (selected.innerText === this.correctOption) {
+    currentScore += 10;
+    console.log(currentScore);
+  }
   // Submit option to the server
   let correct = {
     numCorrect: this.numCorrect + 1,
@@ -102,13 +107,21 @@ function selectOption(e) {
     }
   })
 
+
   // Proceed to next question
   if (currentQuestionIndex < shuffledQuestions.length) {
     setTimeout(() => setNextQuestion(), 2000);
   } else {
     setTimeout(() => askPlayerName(), 2000);
   }
+}
 
+function displayScore() {
+  if (currentScore > 50) {
+    return `We have <span>${currentScore}%</span> overlap of interest! We have so much to talk about!`
+  } else {
+    return `We have <span>${currentScore}%</span> overlap of interest! As if we are complete different people!`
+  }
 }
 
 function displayPlayers() {
@@ -140,32 +153,33 @@ function submitPlayerName(e) {
 function askPlayerName() {
   resetState();
   // Create a wrapper
-  const wrapper = document.createElement("div");
+  const wrapper = document.createElement('div');
   wrapper.setAttribute("class", "form__group");
-
+  // Create a greeting
+  const result = document.createElement('h2');
+  result.innerHTML = displayScore();
   // Generate a form
   const form = document.createElement("form");
   form.setAttribute("method", "post");
   form.setAttribute("action", "submit.php");
-
   // Create an input element for Name
   const name = document.createElement("input");
   name.setAttribute("type", "text");
   name.setAttribute("name", "name");
   name.setAttribute("id", "name");
   name.setAttribute("class", "form__field");
-  name.setAttribute("placeholder", "Who are you?");
+  name.setAttribute("placeholder", "Leave a name?");
   name.setAttribute("autocomplete", "off");
   const label = document.createElement("label");
   label.setAttribute("for", "name");
   label.setAttribute("class", "form__label");
   label.innerHTML = "Name --> PRESS ENTER"
-
   // Append the input element to the form
   form.append(name);
   form.append(label);
 
-  // Append the form the to the wrapper
+  // Append the greeting and form the to the wrapper
+  wrapper.appendChild(result);
   wrapper.appendChild(form);
 
   // Append the wrapper to the document body;
@@ -177,6 +191,6 @@ function askPlayerName() {
 
 document.addEventListener("DOMContentLoaded", function() {
   loadQuestion();
-// askPlayerName();
+ // askPlayerName();
 
 })

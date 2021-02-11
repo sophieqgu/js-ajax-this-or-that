@@ -4,8 +4,8 @@ orange: #FF884B
 yellow: #FFC764
 paleblue: #CDFFFC
 palepink: #FCD1D1
-darkblue: #1d2d50;
-green: #baf1a1
+green: #42e6a4
+grey: #dddddd
 */
 
 
@@ -31,12 +31,11 @@ body {
   width: 500px;
   height: 1000px;
   transition: 0.5s;
-  background: #FFC764;
+
   color: #eee;
-  display: flex;
+  display: inline-grid;
   justify-content: center;
-  align-items: center;
-  vertical-align: center;
+  align-content: center;
   z-index: 1;
   transform: translateY(100px);
   padding: 50px;
@@ -50,21 +49,35 @@ body {
 .container .card.selected {
   transform: translateY(0);
 }
-.container .card.correct {
-  background: #baf1a1;
-  color: #1d2d50;
-  width: auto;
-}
-.container .card.incorrect {
-  background: #FCD1D1;
-  color: #1d2d50;
-  width: auto;
-}
+
+
+
 .container .card .content {
-  font-size: 10rem;
-  padding: 50px;
+  font-size: 12rem;
+  text-align: left;
+  height: 250px;
+  width: auto;
+  color: #eee;
+}
+.incorrect .content {
+  background: #FCD1D1;
+}
+.correct .content {
+  background: #42e6a4;
 }
 
+h2 {
+  margin-top: 100px;
+  color: #CDFFFC;
+  width: 80%;
+  text-align: left;
+}
+span {
+  font-size: 5rem;
+  color: #FF577F;
+  background: #CDFFFC;
+
+}
 
 .form__group {
   position: relative;
@@ -77,14 +90,12 @@ body {
 
 .form__field {
   font-family: inherit;
-  width: 50%;
-  margin-top: 50%;
+  width: 100%;
   border: 0;
   border-bottom: 2px solid #CDFFFC;
   outline: 0;
-  font-size: 1.3rem;
+  font-size: 5rem;
   color: #fff;
-  padding: 7px 0;
   background: transparent;
   transition: border-color 0.2s;
 }
@@ -92,7 +103,7 @@ body {
   color: #CDFFFC;
 }
 .form__field:placeholder-shown ~ .form__label {
-  font-size: 1.3rem;
+  font-size: 2rem;
   cursor: text;
   top: 100%;
 }
@@ -108,10 +119,10 @@ body {
 .form__field:focus ~ .form__label {
   position: absolute;
   top: 100%;
-  margin-left: 25%;
+  margin-left: 0;
   display: block;
   transition: 0.2s;
-  font-size: 0.75rem;
+  font-size: 1rem;
   color: #CDFFFC;
   font-weight: 100;
 }
