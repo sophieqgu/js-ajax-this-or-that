@@ -1,6 +1,5 @@
 const questionContainer = document.getElementById("question-container");
-//leftOption = document.getElementById("left-option");
-//rightOption = document.getElementById("right-option");
+const errors = document.getElementById("errors");
 let shuffledQuestions, currentQuestionIndex = 0;
 let currentScore = 0;
 
@@ -79,7 +78,7 @@ function selectOption(e) {
   }
 
   let data = selected.innerText === this.correctOption ? correct : incorrect;
-
+  // Fetch with "PATCH" request
   fetch(`http://127.0.0.1:3000/questions/${this.id}`, {
     method: "PATCH",
     headers: {
@@ -107,7 +106,6 @@ function selectOption(e) {
     }
   })
 
-
   // Proceed to next question
   if (currentQuestionIndex < shuffledQuestions.length) {
     setTimeout(() => setNextQuestion(), 2000);
@@ -124,40 +122,6 @@ function displayScore() {
   }
 }
 
-function displayPlayers() {
-  fetch("http://127.0.0.1:3000/players")
-  .then(response => response.json())
-  .then(object => {
-    for (const player of object) {
-      let element = document.createElement('p');
-      element.innerText = player.name;
-      document.body.appendChild(element);
-    }
-  });
-}
-
-function submitPlayerName(e) {
-  e.preventDefault();
-  let name = new FormData(this).get("name");
-  const formData = {
-    name: name,
-    score: currentScore
-  }
-
-  fetch("http://127.0.0.1:3000/players", {
-    method: "POST",
-    headers: {
-	     "Content-Type": "application/json",
-	     "Accept": "application/json"
-     },
-    body: JSON.stringify(formData)
-  })
-  .then(response => {
-    console.log(response);
-  });
-  e.target.innerHTML = "";
-  displayPlayers();
-}
 
 function askPlayerName() {
   resetState();
@@ -198,8 +162,50 @@ function askPlayerName() {
   form.addEventListener("submit", submitPlayerName);
 }
 
+
+function submitPlayerName(e) {
+  e.preventDefault();
+  // Postprocess name string
+  let name = new FormData(this).get("name");
+  name = name.replace(/[^a-zA-Z0-9 ]/g, "").trim();
+  // Construct submit data
+  const formData = {
+    name: name,
+    score: currentScore
+  }
+  // Fetch with "POST" request
+  fetch("http://127.0.0.1:3000/players", {
+    method: "POST",
+    headers: {
+	     "Content-Type": "application/json",
+	     "Accept": "application/json"
+     },
+    body: JSON.stringify(formData)
+  })
+  .then(response => response.json())
+  .then(json => {
+    document.querySelector("label").innerText = json;
+    console.log(json);
+    console.log(document.querySelector("label"));
+  });
+}
+
+
+function displayPlayers() {
+  fetch("http://127.0.0.1:3000/players")
+  .then(response => response.json())
+  .then(object => {
+    for (const player of object) {
+      let element = document.createElement('p');
+      element.innerText = player.name;
+      document.body.appendChild(element);
+    }
+  });
+}
+
+
 document.addEventListener("DOMContentLoaded", function() {
   //loadQuestion();
   askPlayerName();
-
+  //displayPlayers();
 })

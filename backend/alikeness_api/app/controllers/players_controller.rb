@@ -9,7 +9,12 @@ class PlayersController < ApplicationController
   end
 
   def create
-    @player = Player.create(params.require(:player).permit(:name, :score))
+    player = Player.new(params.require(:player).permit(:name, :score))
+    if player.save
+      render json: ["Success!"]
+    else
+      render json: player.errors.full_messages
+    end
   end
 
 end

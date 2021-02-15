@@ -6,10 +6,26 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-players = ["Alice", "Bob", "Charlie"]
+players = [
+  {
+    name: "Alice",
+    score: 30
+  },
+  {
+    name: "Bob",
+    score: 50
+  },
+  {
+    name: "Charlie",
+    score: 70
+  }
+]
 
 players.each do |player|
-    Player.create(name: player)
+    Player.create(
+      name: player[:name],
+      score: player[:score]
+    )
 end
 
 questions = [
@@ -42,4 +58,4 @@ questions.each do |question|
     numCorrect: question[:numCorrect],
     numIncorrect: question[:numIncorrect]
   )
-end 
+end

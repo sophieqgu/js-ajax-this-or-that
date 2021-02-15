@@ -131,6 +131,14 @@ span {
   box-shadow: none;
 }
 
+#errors {
+  font-size: 10rem;
+  color: red;
+  width: 100px;
+  height: 100px;
+  background: white;
+  z-index: 2;
+}
 .hidden {
   display: none;
 }
