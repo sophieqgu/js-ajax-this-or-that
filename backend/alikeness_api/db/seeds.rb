@@ -33,20 +33,20 @@ questions = [
     leftOption: "Gryffindor",
     rightOption: "Slytherin",
     correctOption: "Gryffindor",
-    numCorrect: 1,
-    numIncorrect: 0
+    numCorrect: 36,
+    numIncorrect: 64
   }, {
     leftOption: "Oven",
     rightOption: "Microwave",
     correctOption: "Oven",
-    numCorrect: 1,
-    numIncorrect: 0
+    numCorrect: 75,
+    numIncorrect: 25
   }, {
     leftOption: "Bread",
     rightOption: "Cake",
     correctOption: "Cake",
-    numCorrect: 0,
-    numIncorrect: 1
+    numCorrect: 44,
+    numIncorrect: 56
   }
 ]
 

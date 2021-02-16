@@ -4,8 +4,10 @@ orange: #FF884B
 yellow: #FFC764
 paleblue: #CDFFFC
 palepink: #FCD1D1
-green: #42e6a4
+green: #0fffb7, #0fffb7
+red: #fc3a52
 grey: #dddddd
+black: #262626
 */
 
 
@@ -48,22 +50,40 @@ body {
 }
 .container .card.selected {
   transform: translateY(0);
+  color: #eee;
 }
-
-
-
 .container .card .content {
   font-size: 12rem;
   text-align: left;
   height: 250px;
   width: auto;
   color: #eee;
+  margin: 20px 0;
 }
-.incorrect .content {
-  background: #FCD1D1;
-}
-.correct .content {
+.container .card.correct {
   background: #42e6a4;
+}
+.container .card.incorrect {
+  background: #fc3a52;
+}
+.card.correct .content {
+  background: #eee;
+  color: #42e6a4;
+  text-shadow: 5px -5px #FCD1D1;
+  box-shadow: 10px -10px #FCD1D1;
+}
+.card.incorrect .content {
+  background: #eee;
+  color: #fc3a52;
+  text-shadow: 5px -5px #FCD1D1;
+  box-shadow: 10px -10px #FCD1D1;
+}
+
+h1 {
+  font-size: 5rem;
+  color: #262626;
+  text-shadow: 5px -5px #0fffb7;
+  text-align: center;
 }
 
 h2 {
@@ -72,8 +92,10 @@ h2 {
   width: 80%;
   text-align: left;
 }
+
 span {
   font-size: 5rem;
+  font-weight: bolder;
   color: #FF577F;
   background: #CDFFFC;
 
@@ -87,7 +109,6 @@ span {
   text-align: center;
   transition: 2s;
 }
-
 .form__field {
   font-family: inherit;
   width: 100%;
@@ -126,9 +147,55 @@ span {
   color: #CDFFFC;
   font-weight: 100;
 }
-/* reset input */
-.form__field:required, .form__field:invalid {
-  box-shadow: none;
+
+
+.center {
+  width: 40%;
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -25%);
+  padding: 20px;
+  background: #dddddd
+}
+.result {
+  box-sizing: border-box;
+  width: 100%
+  padding: 0px 50px;
+}
+
+.result p {
+  color: #262626;
+  margin: 10px 0 0;
+}
+.result p:nth-child(2) {
+  float: right;
+  position: relative;
+  top: -50px;
+}
+.scoreBar {
+  background: #262626;
+  padding: 4px;
+  box-sizing: border-box;
+  border: 1px solid #0fffb7;
+  border-radius: 2px;
+}
+.barLength {
+  background: #0fffb7;
+  width: 100%;
+  height: 10px;
+}
+.result.highlight .scoreBar {
+  border: 1px solid #FFC764;
+}
+.result.highlight .scoreBar .barLength {
+  background: #FFC764;
+  border: 1px solid #FFC764;
+}
+.result.highlight:hover {
+  border: 1px solid #FFC764;
+  background: #FFC764;
+  cursor: pointer;
 }
 
 #errors {

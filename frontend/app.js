@@ -88,7 +88,6 @@ function selectOption(e) {
     body: JSON.stringify(data)
   })
   .then(response => console.log(response))
-  .then(data => console.log(data))
   .catch(err => console.log(err));
 
   // Display statistics
@@ -104,6 +103,7 @@ function selectOption(e) {
       card.classList.add("incorrect")
       content.innerText = `${100 - correctPercentage}%`;
     }
+    console.log(card);
   })
 
   // Proceed to next question
@@ -118,7 +118,7 @@ function displayScore() {
   if (currentScore > 50) {
     return `We have <span>${currentScore}%</span> overlap of interest! We have so much to talk about!`
   } else {
-    return `We have <span>${currentScore}%</span> overlap of interest! As if we are complete different people!`
+    return `We have <span>${currentScore}%</span> overlap of interest! As if we are completely different people!`
   }
 }
 
@@ -129,8 +129,8 @@ function askPlayerName() {
   const wrapper = document.createElement('div');
   wrapper.setAttribute("class", "form__group");
   // Create a greeting
-  const result = document.createElement('h2');
-  result.innerHTML = displayScore();
+  const greeting = document.createElement('h2');
+  greeting.innerHTML = displayScore();
   // Generate a form
   const form = document.createElement("form");
   form.setAttribute("method", "post");
@@ -152,7 +152,7 @@ function askPlayerName() {
   form.append(label);
 
   // Append the greeting and form the to the wrapper
-  wrapper.appendChild(result);
+  wrapper.appendChild(greeting);
   wrapper.appendChild(form);
 
   // Append the wrapper to the document body;
@@ -174,6 +174,7 @@ function submitPlayerName(e) {
     score: currentScore
   }
   // Fetch with "POST" request
+
   fetch("http://127.0.0.1:3000/players", {
     method: "POST",
     headers: {
@@ -185,27 +186,82 @@ function submitPlayerName(e) {
   .then(response => response.json())
   .then(json => {
     document.querySelector("label").innerText = json;
-    console.log(json);
-    console.log(document.querySelector("label"));
+    console.log(json == "Success!");
+    if (json == "Success!") {
+      displayPlayers(name);
+    }
   });
 }
 
 
-function displayPlayers() {
+function displayPlayers(name) {
+  document.body.innerHTML = "";
+
   fetch("http://127.0.0.1:3000/players")
   .then(response => response.json())
-  .then(object => {
-    for (const player of object) {
-      let element = document.createElement('p');
-      element.innerText = player.name;
-      document.body.appendChild(element);
+  .then(data => {
+    const top10 = data.sort((a, b) => b.score - a.score).slice(0, 10);
+    console.log(top10);
+    const list = document.createElement("div");
+    list.setAttribute("class", "center");
+    const title = document.createElement("h1");
+    title.innerText = "Top 10";
+    list.appendChild(title);
+    document.body.appendChild(list);
+
+    for (const player of top10) {
+      const result = document.createElement("div");
+      result.setAttribute("class", "result")
+      const playerName = document.createElement("p");
+      playerName.innerText = player.name;
+      const playerScore = document.createElement("p");
+      playerScore.innerHTML = player.score;
+      const scoreBar = document.createElement("div");
+      scoreBar.setAttribute("class", "scoreBar");
+      const barLength = document.createElement("div");
+      barLength.setAttribute("class", "barLength");
+      barLength.setAttribute("style", `width: ${player.score}%`)
+      scoreBar.appendChild(barLength);
+      result.appendChild(playerName);
+      result.appendChild(playerScore);
+      result.appendChild(scoreBar);
+
+      if (player.name === name) {
+        result.classList.add("highlight");
+      }
+      list.appendChild(result);
     }
+
+    if (!top10.find(player => player.name === name)) {
+      const result = document.createElement("div");
+      result.setAttribute("class", "result highlight")
+      result.classList.add("highlight");
+      const playerName = document.createElement("p");
+      playerName.innerText = name;
+      const playerScore = document.createElement("p");
+      playerScore.innerHTML = currentScore;
+      const scoreBar = document.createElement("div");
+      scoreBar.setAttribute("class", "scoreBar");
+      const barLength = document.createElement("div");
+      barLength.setAttribute("class", "barLength");
+      barLength.setAttribute("style", `width: ${currentScore}%`)
+      scoreBar.appendChild(barLength);
+      result.appendChild(playerName);
+      result.appendChild(playerScore);
+      result.appendChild(scoreBar);
+      list.appendChild(result);
+    }
+
+
+
+    console.log(document.body)
+
   });
 }
 
 
 document.addEventListener("DOMContentLoaded", function() {
   //loadQuestion();
-  askPlayerName();
-  //displayPlayers();
+  //askPlayerName();
+  displayPlayers();
 })

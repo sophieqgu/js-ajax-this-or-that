@@ -1,7 +1,7 @@
 class QuestionsController < ApplicationController
   def index
     questions = Question.all
-    render json: questions
+    render json: questions, only: [:id, :leftOption, :rightOption, :correctOption, :numCorrect, :numIncorrect]
   end
 
   def update
