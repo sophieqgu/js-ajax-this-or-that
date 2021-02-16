@@ -2,7 +2,9 @@ const questionContainer = document.getElementById("question-container");
 const errors = document.getElementById("errors");
 let shuffledQuestions, currentQuestionIndex = 0;
 let currentScore = 0;
-
+window.onbeforeunload = function (e) {
+  localStorage.clear();
+};
 
 function loadQuestion() {
   questionContainer.classList.remove("hidden");
@@ -62,9 +64,11 @@ function preventClick() {
 function selectOption(e) {
   const selected = e.target;
   selected.classList.add("selected");
+  // Save selection in local storage
+  localStorage.setItem(`${currentQuestionIndex}`, selected.innerText);
+  // Calculate score
   if (selected.innerText === this.correctOption) {
     currentScore += 10;
-    console.log(currentScore);
   }
   // Submit option to the server
   let correct = {
@@ -78,7 +82,7 @@ function selectOption(e) {
   }
 
   let data = selected.innerText === this.correctOption ? correct : incorrect;
-  // Fetch with "PATCH" request
+  // Update selection to the server with PATCH request
   fetch(`http://127.0.0.1:3000/questions/${this.id}`, {
     method: "PATCH",
     headers: {
@@ -87,7 +91,6 @@ function selectOption(e) {
      },
     body: JSON.stringify(data)
   })
-  .then(response => console.log(response))
   .catch(err => console.log(err));
 
   // Display statistics
@@ -103,7 +106,6 @@ function selectOption(e) {
       card.classList.add("incorrect")
       content.innerText = `${100 - correctPercentage}%`;
     }
-    console.log(card);
   })
 
   // Proceed to next question
@@ -173,8 +175,10 @@ function submitPlayerName(e) {
     name: name,
     score: currentScore
   }
-  // Fetch with "POST" request
-
+  // Save player name and score in local storage
+  localStorage.setItem("name", name);
+  localStorage.setItem("score", currentScore);
+  // Send player name and score to the server with POST request
   fetch("http://127.0.0.1:3000/players", {
     method: "POST",
     headers: {
@@ -186,8 +190,7 @@ function submitPlayerName(e) {
   .then(response => response.json())
   .then(json => {
     document.querySelector("label").innerText = json;
-    console.log(json == "Success!");
-    if (json == "Success!") {
+    if (json.success) {
       displayPlayers(name);
     }
   });
@@ -201,7 +204,6 @@ function displayPlayers(name) {
   .then(response => response.json())
   .then(data => {
     const top10 = data.sort((a, b) => b.score - a.score).slice(0, 10);
-    console.log(top10);
     const list = document.createElement("div");
     list.setAttribute("class", "center");
     const title = document.createElement("h1");
@@ -214,6 +216,7 @@ function displayPlayers(name) {
       result.setAttribute("class", "result")
       const playerName = document.createElement("p");
       playerName.innerText = player.name;
+      playerName.addEventListener("click", showPlayer);
       const playerScore = document.createElement("p");
       playerScore.innerHTML = player.score;
       const scoreBar = document.createElement("div");
@@ -238,6 +241,7 @@ function displayPlayers(name) {
       result.classList.add("highlight");
       const playerName = document.createElement("p");
       playerName.innerText = name;
+      playerName.addEventListener("click", showPlayer);
       const playerScore = document.createElement("p");
       playerScore.innerHTML = currentScore;
       const scoreBar = document.createElement("div");
@@ -251,16 +255,24 @@ function displayPlayers(name) {
       result.appendChild(scoreBar);
       list.appendChild(result);
     }
-
-
-
-    console.log(document.body)
-
   });
+}
+
+function showPlayer(e) {
+  console.log("This is clicked!");
+  const playerName = e.target.innerText;
+  console.log(playerName);
+  fetch(`http://127.0.0.1:3000/players/${playerName}`)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+    })
+    .catch(err => console.log(err.message));
 }
 
 
 document.addEventListener("DOMContentLoaded", function() {
+
   //loadQuestion();
   //askPlayerName();
   displayPlayers();

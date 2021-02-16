@@ -59,3 +59,20 @@ questions.each do |question|
     numIncorrect: question[:numIncorrect]
   )
 end
+
+comments = [
+  {
+    content: "Slytherin, really??",
+    player_id: 1
+  },
+  {
+    content: "Didn't know you are a cake person.",
+    player_id: 3
+  }
+]
+
+comments.each do |comment|
+  Player.find(comment[:player_id]).comments.create(
+    content: comment[:content]
+  )
+end

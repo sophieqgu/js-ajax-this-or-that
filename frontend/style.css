@@ -156,14 +156,15 @@ span {
   left: 50%;
   transform: translate(-50%, -25%);
   padding: 20px;
-  background: #dddddd
+  background: #dddddd;
+  box-shadow: 10px -10px #FCD1D1;
+  border-radius: 20px;
 }
 .result {
   box-sizing: border-box;
   width: 100%
   padding: 0px 50px;
 }
-
 .result p {
   color: #262626;
   margin: 10px 0 0;
@@ -192,10 +193,11 @@ span {
   background: #FFC764;
   border: 1px solid #FFC764;
 }
-.result.highlight:hover {
+.result:hover {
   border: 1px solid #FFC764;
   background: #FFC764;
   cursor: pointer;
+  border-radius: 20px;
 }
 
 #errors {
