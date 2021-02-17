@@ -1,30 +1,31 @@
 const questionContainer = document.getElementById("question-container");
-const errors = document.getElementById("errors");
 let shuffledQuestions, currentQuestionIndex = 0;
 let currentPlayer, currentScore = 0;
+// Allow browser to remove localStorage after refresh
 window.onbeforeunload = function (e) {
   localStorage.clear();
 };
 
 function loadQuestion() {
-  questionContainer.classList.remove("hidden");
-
   fetch("http://127.0.0.1:3000/questions")
     .then(response => response.json())
     .then(data => {
       const questions = data;
+      // Randomly select 10 questions to show
       shuffledQuestions = questions.sort(() => Math.random() - 0.5).slice(0, 10);
       setNextQuestion(shuffledQuestions, currentQuestionIndex);
     })
     .catch(err => console.log(err.message));
 }
 
+// Increment question index and show next question
 function setNextQuestion() {
   resetState();
   showQuestion(shuffledQuestions[currentQuestionIndex]);
   currentQuestionIndex++;
 }
 
+// Remove all questionContainer's children
 function resetState() {
   while (questionContainer.firstChild) {
     questionContainer.firstChild.removeEventListener("click", selectOption);
@@ -33,14 +34,14 @@ function resetState() {
 }
 
 function showQuestion(question) {
-  // Create left button
+  // Create left card
   const leftOption = document.createElement("div");
   leftOption.setAttribute("class", "card");
   leftOption.setAttribute("Id", "left-option");
   leftOption.innerText = question.leftOption;
   questionContainer.appendChild(leftOption);
 
-  // Create right button
+  // Create right card
   const rightOption = document.createElement("div");
   rightOption.setAttribute("class", "card");
   rightOption.setAttribute("Id", "right-option");
@@ -54,7 +55,7 @@ function showQuestion(question) {
   questionContainer.addEventListener("click", preventClick.bind(select));
 }
 
-// Prevent click on the sibling again
+// Prevent click on the sibling after selection
 function preventClick() {
   Array.from(questionContainer.children).forEach(card => {
     card.removeEventListener("click", this);
@@ -73,7 +74,7 @@ function selectOption(e) {
     currentScore += 10;
   }
 
-  // Submit option to the server
+  // Construct data to be submitted to the server
   let correct = {
     numCorrect: this.numCorrect + 1,
     numIncorrect: this.numIncorrect
@@ -153,6 +154,8 @@ function askPlayerName() {
   name.setAttribute("class", "form__field");
   name.setAttribute("placeholder", "Leave a name?");
   name.setAttribute("autocomplete", "off");
+
+  // Create an input label
   const label = document.createElement("label");
   label.setAttribute("for", "name");
   label.setAttribute("class", "form__label");
@@ -203,9 +206,11 @@ function submitPlayerName(e) {
   .then(response => response.json())
   .then(json => {
     if (json.id) {
+      // Display player if player is successfully created
       localStorage.setItem("id", json.id);
       displayPlayers(currentPlayer);
     } else {
+      // Show error
       document.querySelector("label").innerText = json;
     }
   });
@@ -215,6 +220,7 @@ function submitPlayerName(e) {
 function displayPlayers(currentPlayer) {
   document.body.innerHTML = "";
 
+  // Create a list of Top 10 players
   const list = document.createElement("div");
   list.setAttribute("class", "center");
 
@@ -229,6 +235,7 @@ function displayPlayers(currentPlayer) {
     const top10 = data.sort((a, b) => b.score - a.score).slice(0, 10);
 
     for (const player of top10) {
+      // Generate a scoreBar for each player
       const result = document.createElement("div");
       result.setAttribute("class", "result")
       const playerName = document.createElement("p");
@@ -246,12 +253,15 @@ function displayPlayers(currentPlayer) {
       result.appendChild(playerScore);
       result.appendChild(scoreBar);
 
+      // Highlight currentPlayer's score
       if (player.name === currentPlayer) {
         result.classList.add("highlight");
       }
+      // Append each scoreBar to the document
       list.appendChild(result);
     }
 
+    // if Top 10 doesn't include currentPlayer, append at the end
     if (!top10.find(player => player.name === currentPlayer)) {
       const result = document.createElement("div");
       result.setAttribute("class", "result highlight")
@@ -285,26 +295,30 @@ function displayPlayers(currentPlayer) {
   form.setAttribute("action", "submit.php");
   form.setAttribute("id", "commentBox");
 
-  // Create an input element for Name
+  // Create a textarea inside the comment box
   const content = document.createElement("textarea");
   content.setAttribute("name", "content");
   content.setAttribute("id", "content");
   content.setAttribute("placeholder", "Leave a comment?");
   content.setAttribute("autocomplete", "off");
+
+  // Create submit button
   const submit = document.createElement("input");
   submit.setAttribute("type", "submit");
   submit.setAttribute("id", "submit");
 
-
-  // Append the input element to the form
+  // Append the textarea and submit button to the form
   form.append(content);
   form.append(submit);
+
   // Add eventlistener
   form.addEventListener("submit", submitComment);
+
   // Append the comment box to the sidebar;
   sidebar.appendChild(form);
 }
 
+// Show each player's comments
 function showPlayer(e) {
   const playerName = e.target.innerText;
   const sidebar = document.getElementById("sidebar");
@@ -329,11 +343,12 @@ function submitComment(e) {
   let currentPlayerId = localStorage.getItem("id");
   let comment = new FormData(this).get("content").trim();
 
+  // Construct data to be submitted to the server
   let formData = {
     player_id: currentPlayerId,
     content: comment
   }
-
+  // Create a comment for the currentPlayer through POST request
   fetch(`http://127.0.0.1:3000/players/${currentPlayerId}/comments`, {
     method: "POST",
     headers: {
@@ -345,6 +360,7 @@ function submitComment(e) {
   .then(response => response.json())
   .then(comment => {
     if (comment.content) {
+      // Create comment box if comment passes validation
       const commentBox = document.createElement("blockquote");
       commentBox.innerText = comment.content;
       localStorage.setItem("comment", comment.content);
@@ -352,12 +368,10 @@ function submitComment(e) {
       sidebar.appendChild(commentBox);
       document.getElementById("commentBox").remove();
     } else {
+      // Show error
       document.querySelector("textarea").setAttribute("placeholder", comment);
     }
-
   })
-
-
 }
 
 document.addEventListener("DOMContentLoaded", function() {
