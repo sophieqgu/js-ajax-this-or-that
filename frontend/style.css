@@ -19,6 +19,7 @@ body {
   align-items: center;
   font-size: 2rem;
   background: linear-gradient(90deg, #FF577F 50%, #FF884B 50%);
+  min-height: 1000px;
 }
 
 .container {
@@ -33,7 +34,6 @@ body {
   width: 500px;
   height: 1000px;
   transition: 0.5s;
-
   color: #eee;
   display: inline-grid;
   justify-content: center;
@@ -157,7 +157,7 @@ span {
   transform: translate(-50%, -25%);
   padding: 20px;
   background: #dddddd;
-  box-shadow: 10px -10px #FCD1D1;
+  box-shadow: 15px -15px #FCD1D1;
   border-radius: 20px;
 }
 .result {
@@ -208,6 +208,64 @@ span {
   background: white;
   z-index: 2;
 }
+
+#sidebar {
+  position: absolute;
+  right: 10%;
+  top: 100px;
+  width: 400px;
+  padding: 10px;
+  min-height: 1000px;
+  height: auto;
+  transition: 2s;
+  border-radius: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+blockquote, textarea {
+  background: white;
+  padding: 20px 30px;
+  margin: 50px 80px;
+  width: 70%;
+  max-width: 500px;
+  color: #262626;
+  font-family: 'Merriweather', serif;
+  border: solid 2px;
+  box-shadow: 15px -15px 0 0 #CDFFFC;
+  border-radius: 20px;
+  font-size: 2rem;
+
+}
+textarea {
+  position: absolute;
+  bottom: 30px;
+}
+
+#submit {
+  width: 100px;
+  height: 100px;
+  line-height: 1;
+  font-size: 18px;
+  letter-spacing: 1px;
+  border: 2px solid;
+  background: transparent;
+  border-radius: 50px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all .35s;
+  position: absolute;
+  bottom: 0;
+  right: -40px;
+}
+
+#submit:hover {
+  background: #eee;
+  font-weight: bolder;
+}
+
+
+
 .hidden {
   display: none;
 }
