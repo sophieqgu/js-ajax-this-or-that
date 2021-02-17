@@ -10,7 +10,7 @@ class CommentsController < ApplicationController
     if params[:player_id]
       comment = Player.find(params[:player_id]).comments.build(params.require(:comment).permit(:content))
       if comment.save
-        render json: comment, only: [:content];
+        render json: comment, only: [:content]
       else
         render json: comment.errors.full_messages
       end

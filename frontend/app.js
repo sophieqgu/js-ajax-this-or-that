@@ -66,7 +66,7 @@ function selectOption(e) {
   selected.classList.add("selected");
 
   // Save selection in local storage
-  localStorage.setItem(`${currentQuestionIndex}`, selected.innerText);
+  localStorage.setItem(`Question_${currentQuestionIndex}`, selected.innerText);
 
   // Calculate score
   if (selected.innerText === this.correctOption) {
@@ -344,12 +344,17 @@ function submitComment(e) {
   })
   .then(response => response.json())
   .then(comment => {
-    const commentBox = document.createElement("blockquote");
-    commentBox.innerText = comment.content;
-    localStorage.setItem("comment", comment.content);
-    const sidebar = document.getElementById("sidebar");
-    sidebar.appendChild(commentBox);
-    document.getElementById("commentBox").remove();
+    if (comment.content) {
+      const commentBox = document.createElement("blockquote");
+      commentBox.innerText = comment.content;
+      localStorage.setItem("comment", comment.content);
+      const sidebar = document.getElementById("sidebar");
+      sidebar.appendChild(commentBox);
+      document.getElementById("commentBox").remove();
+    } else {
+      document.querySelector("textarea").setAttribute("placeholder", comment);
+    }
+
   })
 
 

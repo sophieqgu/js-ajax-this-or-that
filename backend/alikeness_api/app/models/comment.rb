@@ -1,4 +1,5 @@
 class Comment < ApplicationRecord
-
-  belongs_to :player 
+  validates :content, presence: true
+  
+  belongs_to :player
 end
