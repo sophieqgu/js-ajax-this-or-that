@@ -227,7 +227,7 @@ span {
 blockquote, textarea {
   background: white;
   padding: 20px 20px;
-  margin: 50px 20px;
+  margin: 50px 0 50px 20px;
   width: 70%;
   max-width: 350px;
   color: #262626;
