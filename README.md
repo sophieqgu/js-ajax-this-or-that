@@ -1,2 +1,2 @@
 # js-project
- A simple webpage to show our alikeness!
+ Let's play This Or That!

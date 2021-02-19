@@ -150,7 +150,7 @@ span {
 
 
 .center {
-  width: 40%;
+  width: 30%;
   position: absolute;
   top: 25%;
   left: 50%;
@@ -159,6 +159,7 @@ span {
   background: #dddddd;
   box-shadow: 15px -15px #FCD1D1;
   border-radius: 20px;
+  min-width: 400px;
 }
 .result {
   box-sizing: border-box;
@@ -211,7 +212,7 @@ span {
 
 #sidebar {
   position: absolute;
-  right: 10%;
+  right: 0;
   top: 100px;
   width: 400px;
   padding: 10px;
@@ -225,10 +226,10 @@ span {
 
 blockquote, textarea {
   background: white;
-  padding: 20px 30px;
-  margin: 50px 80px;
+  padding: 20px 20px;
+  margin: 50px 20px;
   width: 70%;
-  max-width: 500px;
+  max-width: 350px;
   color: #262626;
   font-family: 'Merriweather', serif;
   border: solid 2px;
@@ -236,10 +237,12 @@ blockquote, textarea {
   border-radius: 20px;
   font-size: 2rem;
 
+
 }
 textarea {
   position: absolute;
-  bottom: 30px;
+  bottom: 10%;
+  left: 20px;
 }
 
 #submit {
@@ -255,12 +258,12 @@ textarea {
   overflow: hidden;
   transition: all .35s;
   position: absolute;
-  bottom: 0;
-  right: -40px;
+  bottom: 10%;
+  left: 350px;
 }
 
 #submit:hover {
-  background: #eee;
+  background: white;
   font-weight: bolder;
 }
 

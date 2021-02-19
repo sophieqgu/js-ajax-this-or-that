@@ -72,6 +72,7 @@ function selectOption(e) {
   // Calculate score
   if (selected.innerText === this.correctOption) {
     currentScore += 10;
+    console.log(currentScore);
   }
 
   // Construct data to be submitted to the server
@@ -240,7 +241,7 @@ function displayPlayers(currentPlayer) {
       result.setAttribute("class", "result")
       const playerName = document.createElement("p");
       playerName.innerText = player.name;
-      playerName.addEventListener("click", showPlayer, {once: true});
+      playerName.addEventListener("click", showPlayer);
       const playerScore = document.createElement("p");
       playerScore.innerHTML = player.score;
       const scoreBar = document.createElement("div");
@@ -256,6 +257,7 @@ function displayPlayers(currentPlayer) {
       // Highlight currentPlayer's score
       if (player.name === currentPlayer) {
         result.classList.add("highlight");
+        playerName.setAttribute("Id", "currentPlayer");
       }
       // Append each scoreBar to the document
       list.appendChild(result);
@@ -268,7 +270,8 @@ function displayPlayers(currentPlayer) {
       result.classList.add("highlight");
       const playerName = document.createElement("p");
       playerName.innerText = currentPlayer;
-      playerName.addEventListener("click", showPlayer, {once: true});
+      playerName.setAttribute("Id", "currentPlayer");
+      playerName.addEventListener("click", showPlayer);
       const playerScore = document.createElement("p");
       playerScore.innerHTML = currentScore;
       const scoreBar = document.createElement("div");
@@ -315,26 +318,35 @@ function displayPlayers(currentPlayer) {
   form.addEventListener("submit", submitComment);
 
   // Append the comment box to the sidebar;
-  sidebar.appendChild(form);
+  document.body.appendChild(form);
 }
 
 // Show each player's comments
 function showPlayer(e) {
   const playerName = e.target.innerText;
-  const sidebar = document.getElementById("sidebar");
+  if (e.target.classList.contains("on")) {
+    e.target.classList.remove("on");
+    const comment = document.getElementById(playerName);
+    if (comment) {
+      comment.remove();
+    }
+  } else {
+    e.target.classList.add("on");
+    const sidebar = document.getElementById("sidebar");
 
-  fetch(`http://127.0.0.1:3000/players/${playerName}/comments`)
-    .then(response => response.json())
-    .then(data => {
-      for (const comment of data) {
-        if (comment.content !== localStorage.getItem("comment")) {
+    fetch(`http://127.0.0.1:3000/players/${playerName}/comments`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        for (const comment of data) {
           const commentBox = document.createElement("blockquote");
+          commentBox.setAttribute("Id", playerName);
           commentBox.innerText = comment.content;
           sidebar.appendChild(commentBox);
         }
-      }
-    })
-    .catch(err => console.log(err.message));
+      })
+      .catch(err => console.log(err.message));
+  }
 }
 
 function submitComment(e) {
@@ -363,9 +375,11 @@ function submitComment(e) {
       // Create comment box if comment passes validation
       const commentBox = document.createElement("blockquote");
       commentBox.innerText = comment.content;
+      commentBox.setAttribute("Id", currentPlayer);
       localStorage.setItem("comment", comment.content);
       const sidebar = document.getElementById("sidebar");
       sidebar.appendChild(commentBox);
+      document.getElementById("currentPlayer").classList.add("on");
       document.getElementById("commentBox").remove();
     } else {
       // Show error
